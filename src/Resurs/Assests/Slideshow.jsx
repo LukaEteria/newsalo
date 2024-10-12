@@ -8,7 +8,7 @@ const Slideshow = () => {
 
     useEffect(() => {
         const fetchPhotos = async () => {
-            const response = await fetch('https://newsalo.netlify.app/api/photos');
+            const response = await fetch('http://localhost:3001/api/photos');
             const data = await response.json();
             setSlides(data);
         };

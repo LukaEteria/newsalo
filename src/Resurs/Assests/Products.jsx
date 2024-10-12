@@ -10,7 +10,7 @@ export default function Products() {
     useEffect(() => {
         const fetchPhotos = async () => {
             try {
-                const response = await fetch("https://newsalo.netlify.app/api/homesection");
+                const response = await fetch("http://localhost:3001/api/homesection"); // Local API call
                 // Change to your deployed URL when ready, e.g.:
                 // const response = await fetch("https://your-deployed-url/api/homesection");
                 const data = await response.json();
