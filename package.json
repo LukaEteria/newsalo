@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "start": "node index.js" // დაამატეთ ეს ხაზი
   },
   "dependencies": {
     "@fortawesome/free-regular-svg-icons": "^6.6.0",
