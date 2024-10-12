@@ -5,7 +5,7 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
-    "build": "remix build",
+    "build": "vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
@@ -17,7 +17,6 @@
     "react-dom": "^18.3.1",
     "react-router-dom": "^6.26.2",
     "react-slick": "^0.30.2",
-    "remix": "^2.13.1",
     "slick-carousel": "^1.8.1",
     "swiper": "^11.1.14"
   },
