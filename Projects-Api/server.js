@@ -1,20 +1,40 @@
+const express = require('express');
+const cors = require('cors');
+const fs = require('fs');
+const path = require('path');
 
-const express = require("express");
-const cors = require("cors");
 const app = express();
-const port = 3001;
+const PORT = 3001;
 
-const photos = require("./photos.json");
-
-// CORS-ის საშუალებით ხელმისაწვდომობა
+// Middleware
 app.use(cors());
+app.use(express.json());
+app.use('/assets', express.static(path.join(__dirname, 'src/assets'))); // Static file serving for images
 
-// Photos endpoint
-app.get("/api/photos", (req, res) => {
-  res.json(photos);
+// Root endpoint
+app.get('/', (req, res) => {
+    res.send('Welcome to the photo API!'); // Simple response for the root URL
 });
 
-// სერვერის გაწვდვა
-app.listen(port, () => {
-  console.log(`Server is running at http://localhost:${port}`);
+// Load photos from JSON file
+app.get('/api/photos', (req, res) => {
+    fs.readFile(path.join(__dirname, 'photos.json'), 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to read photos' });
+        }
+        res.json(JSON.parse(data)); // Return JSON data from the file
+    });
+});
+app.get('/api/homesection', (req, res) => {
+  fs.readFile(path.join(__dirname, 'homesection.json'), 'utf8', (err, data) => {
+      if (err) {
+          return res.status(500).json({ error: 'Failed to read homesection data' });
+      }
+      res.json(JSON.parse(data)); // Return JSON data from the file
+  });
+});
+
+// Start server
+app.listen(PORT, () => {
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

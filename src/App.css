@@ -225,3 +225,7 @@ nav {
   text-align: right; /* ტექსტის მარჯვენა გაწვდვა */
 }
 
+.Home_container {
+  display: flex;
+  flex-direction: column;
+}

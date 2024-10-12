@@ -1,104 +1,59 @@
 import React, { useState, useEffect } from 'react';
 import './Slideshow.css'; // Make sure to include your CSS file
 
-const slides = [
-    {
-        eachSlide: 'url(https://globallychem.com/wp-content/uploads/2023/12/banner-2.png)',
-    },
-    {
-        eachSlide: 'url(https://biotol.com.tr/uploads/images/biotolbuldeterjani.jpg)',
-    },
-    {
-        eachSlide: 'url(https://biotol.com.tr/uploads/images/biotolhandgel.jpg)',
-    },
-    {
-        eachSlide: 'url(https://biotol.com.tr/uploads/images/biotolyumusatici.jpg)',
-    }
-];
-
 const Slideshow = () => {
+    const [slides, setSlides] = useState([]);
     const [active, setActive] = useState(0);
     const [autoplay, setAutoplay] = useState(true);
-    const max = slides.length;
-
-    const intervalBetweenSlides = () => {
-        if (autoplay) {
-            setActive(active === max - 1 ? 0 : active + 1);
-        }
-    };
 
     useEffect(() => {
-        const interval = setInterval(() => intervalBetweenSlides(), 3000);
+        const fetchPhotos = async () => {
+            const response = await fetch('http://localhost:3001/api/photos');
+            const data = await response.json();
+            setSlides(data);
+        };
+
+        fetchPhotos();
+    }, []);
+
+    const max = slides.length;
+
+    useEffect(() => {
+        const interval = autoplay ? setInterval(() => {
+            setActive((prev) => (prev + 1) % max);
+        }, 3000) : null;
+
         return () => clearInterval(interval);
-    }, [active, autoplay]);
+    }, [autoplay, max]);
 
     const toggleAutoPlay = () => setAutoplay(!autoplay);
 
-    const nextOne = () => setActive(active < max - 1 ? active + 1 : 0);
-    const prevOne = () => setActive(active > 0 ? active - 1 : max - 1);
-    
-    const isActive = (value) => active === value ? 'active' : '';
-
-    const setSliderStyles = () => {
-        const transition = active * -100;
-        return {
-            width: `${slides.length * 100}vw`,
-            transform: `translateX(${transition}vw)`
-        };
-    };
-
-    const renderSlides = () => slides.map((item, index) => (
-        <div 
-            className='each-slide' 
-            key={index} 
-            style={{ backgroundImage: item.eachSlide }}
-        />
-    ));
-
-    const renderDots = () => slides.map((_, index) => (
-        <li className={isActive(index)} key={index}>
-            <button onClick={() => setActive(index)}>
-                <span>&#9679;</span>
-            </button>
-        </li>
-    ));
-
-    const renderPlayStop = () => (
-        autoplay
-        ? (
-            <svg fill='#FFFFFF' height='24' viewBox='0 0 24 24' width='24'>
-                <path d='M0 0h24v24H0z' fill='none' />
-                <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z' />
-            </svg>
+    const renderSlides = () => (
+        max > 0 && (
+            <div className='each-slide' style={{ backgroundImage: `url(${slides[active].url})` }} />
         )
-        : (
-            <svg fill='#FFFFFF' height='24' viewBox='0 0 24 24' width='24'>
-                <path d='M0 0h24v24H0z' fill='none' />
-                <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z' />
-            </svg>
-        )
+    );
+
+    const renderDots = () => (
+        <ul className='dots-container'>
+            {slides.map((_, index) => (
+                <li className={active === index ? 'active' : ''} key={index}>
+                    <button onClick={() => setActive(index)}>&#9679;</button>
+                </li>
+            ))}
+        </ul>
     );
 
     const renderArrows = () => (
         <>
-            <button 
-                type='button'
-                className='arrows prev' 
-                onClick={prevOne}
-            >
+            <button className='arrows prev' onClick={() => setActive((active - 1 + max) % max)} disabled={max === 0}>
                 <svg fill='#FFFFFF' width='50' height='50' viewBox='0 0 24 24'>
                     <path d='M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z' />
-                    <path d='M0 0h24v24H0z' fill='none' />
                 </svg>
             </button>
-            <button 
-                type='button'
-                className='arrows next' 
-                onClick={nextOne}
-            >
-                <svg fill='#FFFFFF' height='50' viewBox='0 0 24 24' width='50'>
+            <button className='arrows next' onClick={() => setActive((active + 1) % max)} disabled={max === 0}>
+                <svg fill='#FFFFFF' width='50' height='50' viewBox='0 0 24 24'>
                     <path d='M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z' />
-                    <path d='M0 0h24v24H0z' fill='none' />
                 </svg>
             </button>
         </>
@@ -106,22 +61,26 @@ const Slideshow = () => {
 
     return (
         <section className='slider'>
-            <div className='wrapper' style={setSliderStyles()}>
-                {renderSlides()}
-            </div>
+            <div className='wrapper'>{renderSlides()}</div>
             {renderArrows()}
-            <ul className='dots-container'>
-                {renderDots()}
-            </ul>
-            <button 
-                type='button'
-                className='toggle-play' 
-                onClick={toggleAutoPlay}
-            > 
-                {renderPlayStop()}
+            {renderDots()}
+            <button type='button' className='toggle-play' onClick={toggleAutoPlay}>
+                {autoplay ? (
+                    <svg fill='#FFFFFF' height='24' viewBox='0 0 24 24' width='24'>
+                        <path d='M0 0h24v24H0z' fill='none' />
+                        <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z' />
+                    </svg>
+                ) : (
+                    <svg fill='#FFFFFF' height='24' viewBox='0 0 24 24' width='24'>
+                        <path d='M0 0h24v24H0z' fill='none' />
+                        <path d='M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 14.5v-9l6 4.5-6 4.5z' />
+                    </svg>
+                )}
             </button>
         </section>
     );
 };
 
 export default Slideshow;
+
+

@@ -1,28 +1,21 @@
-import axios from "axios";
-import "../App.css"; // ვეძახით CSS ფაილს
-import React, { useEffect, useState } from "react";
-import Slideshow from "./Assests/Slideshow";
+import "../App.css"; // თქვენი CSS სტილები
+import React from "react";
+import Slideshow from "./Assests/Slideshow"; // Slideshow კომპონენტის იმპორტი
+import Products from "./Assests/Products";
+
+
+
 
 const Home = () => {
-  const [photo, setPhoto] = useState(null); // მხოლოდ ერთი ფოტოს დასახვედრად
-
-  useEffect(() => {
-    const fetchPhoto = async () => {
-      try {
-        const response = await axios.get("http://localhost:3001/api/photos");
-        setPhoto(response.data[0]); // მხოლოდ პირველი ფოტო
-      } catch (error) {
-        console.error("Error fetching photo:", error);
-      }
-    };
-
-    fetchPhoto(); // გამოვიძახებთ fetchPhoto ფუნქციას
-  }, []);
-
   return (
+    <div className="Home_container">
       <section>
-      <Slideshow />
+        <Slideshow /> 
       </section>
+      <section>
+        <Products />
+      </section>
+    </div>
   );
 };
 
