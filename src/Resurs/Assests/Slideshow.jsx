@@ -8,7 +8,7 @@ const Slideshow = () => {
 
     useEffect(() => {
         const fetchPhotos = async () => {
-            const response = await fetch('http://localhost:3001/api/photos');
+            const response = await fetch('https://newsalooo.onrender.com/api/photos');
             const data = await response.json();
             setSlides(data);
         };
@@ -82,5 +82,3 @@ const Slideshow = () => {
 };
 
 export default Slideshow;
-
-
