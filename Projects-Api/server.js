@@ -26,12 +26,12 @@ app.get('/api/photos', (req, res) => {
     });
 });
 app.get('/api/homesection', (req, res) => {
-  fs.readFile(path.join(__dirname, 'homesection.json'), 'utf8', (err, data) => {
-      if (err) {
-          return res.status(500).json({ error: 'Failed to read homesection data' });
-      }
-      res.json(JSON.parse(data)); // Return JSON data from the file
-  });
+    fs.readFile(path.join(__dirname, 'homesection.json.json'), 'utf8', (err, data) => {
+        if (err) {
+            return res.status(500).json({ error: 'Failed to read homesection' });
+        }
+        res.json(JSON.parse(data)); // Return JSON data from the file
+    });
 });
 
 // Start server
