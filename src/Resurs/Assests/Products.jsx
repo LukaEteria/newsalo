@@ -9,7 +9,7 @@ export default function Products() {
   useEffect(() => {
     const fetchPhotos = async () => {
       try {
-        const response = await fetch("../Projects-Api/homesection.json"); // Make sure this path is correct
+        const response = await fetch("http://localhost:3001/api/homesection"); // აქ გამოსწორებულია
         const data = await response.json();
         setPhotos(data);
       } catch (error) {
