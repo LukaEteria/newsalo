@@ -3,18 +3,18 @@
         "id": 5,
         "title": "OXO Colors",
         "description": "Description for product 1.",
-        "imageUrl": "../src/assets/items1.png"
+        "imageUrl": "https://i.ibb.co/NY9wFjL/Untitled-design-3.png"
     },
     {
         "id": 6,
         "title": "OXO Universal",
         "description": "Description for product 2.",
-        "imageUrl": "../src/assets/items2.png"
+        "imageUrl": "https://i.ibb.co/N3nRtNf/Untitled-design-4.png"
     },
     {
         "id": 7,
         "title": "OXO Blacks",
         "description": "Description for product 3.",
-        "imageUrl": "../src/assets/items3.png"
+        "imageUrl": "https://i.ibb.co/1MWWFHt/Untitled-design-5.png"
     }
 ]
